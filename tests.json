@@ -16,7 +16,7 @@
       "id": "guppyTest",
       "parameters": {
         "wdl_inputs": {
-          "guppy.inputPath": "/.mounts/labs/gsiprojects/gsi/ONT_PIPE/input/",
+          "guppy.inputPath": "/.mounts/labs/gsiprojects/gsi/ONT_PIPE/data/20171016_1345_PGD18/fast5/1",
           "guppy.config" : "/.mounts/labs/ont/software/guppy-3.1.5/ont-guppy/data/dna_r9.4.1_450bps_hac.cfg"
         }
       }
