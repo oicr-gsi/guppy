@@ -41,10 +41,13 @@ task convert2Fastq {
     >>>
 
     output {
-        File guppyOutput = "./guppyOutput.zip"
+        File guppyOutput = "guppyOutput.zip"
     }
     runtime {
         modules: "~{modules}"
         memory: "~{memory} G"
+        gpuCount: 2
+        gpuType: "nvidia-tesla-v100"
+        nvidiaDriverVersion: "396.26.00"
     }
 }
