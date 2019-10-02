@@ -11,7 +11,9 @@ workflow guppy {
             config = config
     }
     output {
-        File guppyOutput = convert2Fastq.guppyOutput
+        File mergedFastqFile = convert2Fastq.mergedFastqFile
+        File seqSummary = convert2Fastq.seqSummary
+        File seqTelemetry = convert2Fastq.seqTelemetry
     }
 }
 
@@ -37,11 +39,13 @@ task convert2Fastq {
         --save_path ~{savePath}  \
         --config ~{config} \
         -x ~{basecallingDevice}
-        zip -r guppyOutput.zip output
+        cat *.fastq > mergedFastqFile.fastq
     >>>
 
     output {
-        File guppyOutput = "guppyOutput.zip"
+        File mergedFastqFile = "mergedFastqFile.fastq"
+        File seqSummary = "sequencing_summary.txt"
+        File seqTelemetry = "sequencing_telemetry.js"
     }
     runtime {
         modules: "~{modules}"
