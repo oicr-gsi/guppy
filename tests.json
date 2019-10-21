@@ -3,7 +3,7 @@
     "description": "guppy workflow test",
     "metrics_calculate": "calculate.sh",
     "metrics_compare": "compare.sh",
-    "output_metrics_dir": "/.mounts/labs/PDE/data/RegressionTests/guppy",
+    "output_metrics_dir": "/.mounts/labs/ont/testdata/guppy/output_metrics",
     "parameters": {
       "wdl_options": {
         "write_to_cache": false,
@@ -16,8 +16,8 @@
       "id": "guppyTest",
       "parameters": {
         "wdl_inputs": {
-          "guppy.inputPath": "/.mounts/labs/gsiprojects/gsi/ONT_PIPE/data/20171016_1345_PGD18/fast5/1",
-          "guppy.config" : "/.mounts/labs/ont/software/guppy-3.1.5/ont-guppy/data/dna_r9.4.1_450bps_hac.cfg"
+          "guppy.inputPath": "/.mounts/labs/ont/testdata/guppy/input_data/fast5",
+          "guppy.config" : "/.mounts/labs/ont/testdata/guppy/input_data/config/dna_r9.4.1_450bps_hac.cfg"
         }
       }
     }

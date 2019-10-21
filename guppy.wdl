@@ -31,6 +31,7 @@ task convert2Fastq {
     }
 
     command <<<
+
         ~{guppy} \
         --num_callers ~{numCallers} \
         --chunks_per_runner ~{chunksPerRunner} \
@@ -50,8 +51,11 @@ task convert2Fastq {
     runtime {
         modules: "~{modules}"
         memory: "~{memory} G"
+        runtimeAttr: "nvidia"
+        inputData: "~{inputPath}"
         gpuCount: 2
         gpuType: "nvidia-tesla-v100"
         nvidiaDriverVersion: "396.26.00"
+        image: "nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04"
     }
 }
