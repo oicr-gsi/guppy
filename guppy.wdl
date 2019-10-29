@@ -54,7 +54,7 @@ task convert2Fastq {
         gpuCount: 2
         gpuType: "nvidia-tesla-v100"
         nvidiaDriverVersion: "396.26.00"
-        docker: "19d93825caa7"
+        docker: "guppy_nvidia_docker:1.0"
         dockerRuntime: "nvidia"
         backend = "SGE-Docker"
     }
