@@ -21,7 +21,6 @@ task convert2Fastq {
     input {
         String? guppy = "guppy_basecaller"
         String inputPath
-        String? dockerInputPath = "/mnt/ro_data"
         String config
         String? savePath = "./output"
         String? modules = "guppy/3.2.4"
@@ -36,7 +35,7 @@ task convert2Fastq {
         --num_callers ~{numCallers} \
         --chunks_per_runner ~{chunksPerRunner} \
         -r \
-        --input_path ~{dockerInputPath}/fast5 \
+        --input_path ~{inputPath} \
         --save_path ~{savePath}  \
         --config /ont-guppy/data/~{config} \
         -x ~{basecallingDevice} \
@@ -52,12 +51,10 @@ task convert2Fastq {
     runtime {
         modules: "~{modules}"
         memory_gb: "~{memory} GB"
-        inputData: "~{inputPath}"
         gpuCount: 2
         gpuType: "nvidia-tesla-v100"
         nvidiaDriverVersion: "396.26.00"
         docker: "19d93825caa7"
-        dockerInputPath: "~{dockerInputPath}"
         dockerRuntime: "nvidia"
         backend = "SGE-Docker"
     }

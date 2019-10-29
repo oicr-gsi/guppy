@@ -7,7 +7,8 @@
     "parameters": {
       "wdl_options": {
         "write_to_cache": false,
-        "read_from_cache": false
+        "read_from_cache": false,
+        "backend": "SGE-Docker"
       }
     }
   },
