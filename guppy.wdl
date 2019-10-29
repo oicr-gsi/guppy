@@ -21,6 +21,7 @@ task convert2Fastq {
     input {
         String? guppy = "guppy_basecaller"
         String inputPath
+        String? dockerInputPath = "/mnt/ro_data"
         String config
         String? savePath = "./output"
         String? modules = "guppy/3.2.4"
@@ -31,31 +32,33 @@ task convert2Fastq {
     }
 
     command <<<
-
         ~{guppy} \
         --num_callers ~{numCallers} \
         --chunks_per_runner ~{chunksPerRunner} \
         -r \
-        --input_path ~{inputPath} \
+        --input_path ~{dockerInputPath}/fast5 \
         --save_path ~{savePath}  \
-        --config ~{config} \
-        -x ~{basecallingDevice}
-        cat *.fastq > mergedFastqFile.fastq
+        --config /ont-guppy/data/~{config} \
+        -x ~{basecallingDevice} \
+        --disable_pings
+        cat ~{savePath}/*.fastq > ~{savePath}/mergedFastqFile.fastq
     >>>
 
     output {
-        File mergedFastqFile = "mergedFastqFile.fastq"
-        File seqSummary = "sequencing_summary.txt"
-        File seqTelemetry = "sequencing_telemetry.js"
+        File mergedFastqFile = "~{savePath}/mergedFastqFile.fastq"
+        File seqSummary = "~{savePath}/sequencing_summary.txt"
+        File seqTelemetry = "~{savePath}/sequencing_telemetry.js"
     }
     runtime {
         modules: "~{modules}"
-        memory: "~{memory} G"
-        runtimeAttr: "nvidia"
+        memory_gb: "~{memory} GB"
         inputData: "~{inputPath}"
         gpuCount: 2
         gpuType: "nvidia-tesla-v100"
         nvidiaDriverVersion: "396.26.00"
-        image: "nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04"
+        docker: "19d93825caa7"
+        dockerInputPath: "~{dockerInputPath}"
+        dockerRuntime: "nvidia"
+        backend = "SGE-Docker"
     }
 }
