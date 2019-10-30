@@ -51,11 +51,10 @@ task convert2Fastq {
     runtime {
         modules: "~{modules}"
         memory_gb: "~{memory} GB"
-        gpuCount: 2
+        gpuCount: 1
         gpuType: "nvidia-tesla-v100"
         nvidiaDriverVersion: "396.26.00"
         docker: "guppy_nvidia_docker:1.0"
         dockerRuntime: "nvidia"
-        backend = "SGE-Docker"
     }
 }
