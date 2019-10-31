@@ -37,7 +37,7 @@ task convert2Fastq {
         -r \
         --input_path ~{inputPath} \
         --save_path ~{savePath}  \
-        --config /ont-guppy/data/~{config} \
+        --config ~{config} \
         -x ~{basecallingDevice} \
         --disable_pings
         cat ~{savePath}/*.fastq > ~{savePath}/mergedFastqFile.fastq
