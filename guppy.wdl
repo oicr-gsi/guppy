@@ -3,12 +3,14 @@ version 1.0
 workflow guppy {
     input {
         String inputPath
-        String config
+        String flowcell
+        String kit
     }
     call convert2Fastq {
         input:
             inputPath = inputPath,
-            config = config
+            flowcell = flowcell,
+            kit = kit
     }
     output {
         File mergedFastqFile = convert2Fastq.mergedFastqFile
@@ -21,7 +23,8 @@ task convert2Fastq {
     input {
         String? guppy = "guppy_basecaller"
         String inputPath
-        String config
+        String flowcell
+        String kit
         String? savePath = "./output"
         String? modules = "guppy/3.2.4"
         String? basecallingDevice = "cuda:0 cuda:1"
@@ -37,7 +40,8 @@ task convert2Fastq {
         -r \
         --input_path ~{inputPath} \
         --save_path ~{savePath}  \
-        --config ~{config} \
+        --flowcell ~{flowcell} \
+        --kit ~{kit} \
         -x ~{basecallingDevice} \
         --disable_pings
         cat ~{savePath}/*.fastq > ~{savePath}/mergedFastqFile.fastq

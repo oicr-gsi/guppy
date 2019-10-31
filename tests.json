@@ -17,8 +17,9 @@
       "id": "guppyTest",
       "parameters": {
         "wdl_inputs": {
-          "guppy.inputPath": "/.mounts/labs/ont/testdata/guppy/input_data/fast5",
-          "guppy.config" : "/ont-guppy/data/dna_r9.4.1_450bps_hac.cfg"
+          "guppy.inputPath": "/.mounts/labs/gsi/testdata/guppy/input_data/20171016_1345_PGD18/fast5",
+          "guppy.kit": "SQK-CAS109",
+          "guppy.flowcell" : "FLO-MIN106"
         }
       }
     }
