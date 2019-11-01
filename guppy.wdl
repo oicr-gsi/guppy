@@ -44,11 +44,11 @@ task convert2Fastq {
         --kit ~{kit} \
         -x ~{basecallingDevice} \
         --disable_pings
-        cat ~{savePath}/*.fastq > ~{savePath}/mergedFastqFile.fastq
+        cat ~{savePath}/mergedFastqFile.fastq | paste - - - - | sort -k1,1 -S 3G | tr '\t' '\n' | gzip -n > ~{savePath}/mergedFastqFile.fastq.gz
     >>>
 
     output {
-        File mergedFastqFile = "~{savePath}/mergedFastqFile.fastq"
+        File mergedFastqFile = "~{savePath}/mergedFastqFile.fastq.gz"
         File seqSummary = "~{savePath}/sequencing_summary.txt"
         File seqTelemetry = "~{savePath}/sequencing_telemetry.js"
     }
