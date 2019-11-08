@@ -28,7 +28,7 @@ task convert2Fastq {
         String? savePath = "./output"
         String? modules = "guppy/3.2.4"
         String? basecallingDevice = "cuda:0 cuda:1"
-        Int? memory = 31
+        Int? memory = 63
         Int? numCallers = 16
         Int? chunksPerRunner = 96
     }
@@ -55,7 +55,7 @@ task convert2Fastq {
     runtime {
         modules: "~{modules}"
         memory: "~{memory} GB"
-        gpuCount: 1
+        gpuCount: 2
         gpuType: "nvidia-tesla-v100"
         nvidiaDriverVersion: "396.26.00"
         docker: "guppy_nvidia_docker:1.0"
