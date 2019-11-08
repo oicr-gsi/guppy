@@ -44,7 +44,7 @@ task convert2Fastq {
         --kit ~{kit} \
         -x ~{basecallingDevice} \
         --disable_pings
-        cat ~{savePath}/mergedFastqFile.fastq | paste - - - - | sort -k1,1 -S 3G | tr '\t' '\n' | bgzip > ~{savePath}/mergedFastqFile.fastq.gz
+        cat ~{savePath}/*.fastq | paste - - - - | sort -k1,1 -S 3G | tr '\t' '\n' | bgzip > ~{savePath}/mergedFastqFile.fastq.gz
     >>>
 
     output {
@@ -54,7 +54,7 @@ task convert2Fastq {
     }
     runtime {
         modules: "~{modules}"
-        memory_gb: "~{memory} GB"
+        memory: "~{memory} GB"
         gpuCount: 1
         gpuType: "nvidia-tesla-v100"
         nvidiaDriverVersion: "396.26.00"
