@@ -28,7 +28,7 @@ task convert2Fastq {
         String? savePath = "./output"
         String? modules = "guppy/3.2.4"
         String? basecallingDevice = "cuda:0 cuda:1"
-        Int? memory = 63
+        Int? memory = 48
         Int? numCallers = 16
         Int? chunksPerRunner = 96
     }
