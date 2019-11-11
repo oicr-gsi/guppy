@@ -64,9 +64,9 @@ task convert2Fastq {
     }
     meta {
         output_meta : {
-            mergedFastqFile: "",
-            seqSummary: ""
-            seqTelemetry: ""
+            mergedFastqFile: "merged output of all the fastq's gzipped",
+            seqSummary: "sequencing summary of the basecalling"
+            seqTelemetry: "sequencing telemetry of the basecalling"
         }
     }
     command <<<

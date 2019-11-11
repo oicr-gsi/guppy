@@ -77,9 +77,9 @@ Parameter|Value|Default|Description
 
 Output | Type | Description
 ---|---|---
-`mergedFastqFile`|File|
-`seqSummary`|File|
-`seqTelemetry`|File|
+`mergedFastqFile`|File|merged output of all the fastq's gzipped
+`seqSummary`|File|sequencing summary of the basecalling
+`seqTelemetry`|File|sequencing telemetry of the basecalling
 
 
 ## Niassa + Cromwell
