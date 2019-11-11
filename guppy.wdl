@@ -6,6 +6,24 @@ workflow guppy {
         String flowcell
         String kit
     }
+    parameter_meta {
+        inputPath: "Input directory (directory of the nanopore run)"
+        flowcell: "flowcell used in nanopore sequencing"
+        kit: "kit used in nanopore sequencing"
+    }
+
+    meta {
+        author: "Matthew Wong"
+        email: "m2wong@oicr.on.ca"
+        description: "Workflow to run guppy basecaller for nanopore data"
+        dependencies: [{
+            name: "nvidia-docker2",
+            url: "https://github.com/NVIDIA/nvidia-docker/wiki/Installation-(version-2.0)"
+        },{
+            name: "bgzip"
+            url: "http://www.htslib.org/doc/bgzip.html"
+        }]
+    }
     call convert2Fastq {
         input:
             inputPath = inputPath,
@@ -27,12 +45,30 @@ task convert2Fastq {
         String kit
         String? savePath = "./output"
         String? modules = "guppy/3.2.4"
-        String? basecallingDevice = "cuda:0 cuda:1"
-        Int? memory = 48
+        String? basecallingDevice = '"cuda:0 cuda:1"'
+        Int? memory = 63
         Int? numCallers = 16
-        Int? chunksPerRunner = 96
+        Int? chunksPerRunner = 3328
     }
-
+    parameter_meta {
+        guppy: "guppy_basecaller name to use."
+        inputPath: "Input directory (directory of the nanopore run)"
+        flowcell: "flowcell used in nanopore sequencing"
+        kit: "kit used in nanopore sequencing"
+        savePath: "Input file (bam or sam)."
+        modules: "Environment module names and version to load (space separated) before command execution."
+        basecallingDevice: "Specify basecalling device: 'auto', or 'cuda:<device_id>'."
+        memory: "Memory (in GB) allocated for job."
+        chunksPerRunner: "Maximum chunks per runner."
+        numCallers: "Number of parallel basecallers to create."
+    }
+    meta {
+        output_meta : {
+            mergedFastqFile: "",
+            seqSummary: ""
+            seqTelemetry: ""
+        }
+    }
     command <<<
         ~{guppy} \
         --num_callers ~{numCallers} \
