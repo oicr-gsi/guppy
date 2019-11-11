@@ -20,7 +20,7 @@ workflow guppy {
             name: "nvidia-docker2",
             url: "https://github.com/NVIDIA/nvidia-docker/wiki/Installation-(version-2.0)"
         },{
-            name: "bgzip"
+            name: "bgzip",
             url: "http://www.htslib.org/doc/bgzip.html"
         }]
     }
@@ -65,7 +65,7 @@ task convert2Fastq {
     meta {
         output_meta : {
             mergedFastqFile: "merged output of all the fastq's gzipped",
-            seqSummary: "sequencing summary of the basecalling"
+            seqSummary: "sequencing summary of the basecalling",
             seqTelemetry: "sequencing telemetry of the basecalling"
         }
     }
