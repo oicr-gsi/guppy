@@ -70,7 +70,7 @@ task convert2Fastq {
         output_meta : {
             mergedFastqFile: "merged output of all the fastq's gzipped",
             seqSummary: "sequencing summary of the basecalling",
-            seqTelemetry: "sequencing telemetry of the basecalling"
+            seqTelemetry: "sequencing telemetry of the basecalling",
             fastqSavePath: "path where fastqs are saved from guppy"
         }
     }
