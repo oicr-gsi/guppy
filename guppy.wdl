@@ -89,7 +89,7 @@ task convert2Fastq {
     >>>
 
     output {
-        File mergedFastqFile = "~{savePath}/~{outputFileNamePrefix}.fastq.gz"
+        File mergedFastqFile = "~{savePath}/~{outputFileNamePrefix}_mergedfastq.fastq.gz"
         File seqSummary = "~{savePath}/sequencing_summary.txt"
         File seqTelemetry = "~{savePath}/sequencing_telemetry.js"
     }
