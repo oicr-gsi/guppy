@@ -31,6 +31,10 @@ If you want to load an image to your local images from your `.tar.gz` file use t
 docker load < guppy_nvidia_docker.tar.gz
 ```
 
+# guppy
+
+Workflow to run guppy basecaller for nanopore data
+
 ## Overview
 
 ## Dependencies
@@ -54,6 +58,7 @@ Parameter|Value|Description
 `inputPath`|String|Input directory (directory of the nanopore run)
 `flowcell`|String|flowcell used in nanopore sequencing
 `kit`|String|kit used in nanopore sequencing
+`outputFileNamePrefix`|String|Variable used to set the name of the mergedfastqfile
 
 
 #### Optional workflow parameters:
@@ -65,14 +70,12 @@ Parameter|Value|Default|Description
 Parameter|Value|Default|Description
 ---|---|---|---
 `convert2Fastq.guppy`|String?|"guppy_basecaller"|guppy_basecaller name to use.
-`convert2Fastq.savePath`|String?|"./output"|Path to save the output files
+`convert2Fastq.savePath`|String?|"./output"|Path to save the guppy output
 `convert2Fastq.modules`|String?|"guppy/3.2.4"|Environment module names and version to load (space separated) before command execution.
 `convert2Fastq.basecallingDevice`|String?|'"cuda:0 cuda:1"'|Specify basecalling device: 'auto', or 'cuda:<device_id>'.
 `convert2Fastq.memory`|Int?|63|Memory (in GB) allocated for job.
 `convert2Fastq.numCallers`|Int?|16|Number of parallel basecallers to create.
 `convert2Fastq.chunksPerRunner`|Int?|3328|Maximum chunks per runner.
-`mergeFastq.memory`|Int?|63|Memory (in GB) allocated for job.
-`mergeFastq.modules`|String?|None|Environment module names and version to load (space separated) before command execution.
 
 
 ### Outputs

@@ -59,7 +59,7 @@ task convert2Fastq {
         inputPath: "Input directory (directory of the nanopore run)"
         flowcell: "flowcell used in nanopore sequencing"
         kit: "kit used in nanopore sequencing"
-        savePath: "Input file (bam or sam)."
+        savePath: "Path to save the guppy output"
         modules: "Environment module names and version to load (space separated) before command execution."
         basecallingDevice: "Specify basecalling device: 'auto', or 'cuda:<device_id>'."
         memory: "Memory (in GB) allocated for job."
