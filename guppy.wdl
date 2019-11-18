@@ -85,7 +85,7 @@ task convert2Fastq {
         --kit ~{kit} \
         -x ~{basecallingDevice} \
         --disable_pings
-        cat ~{savePath}/*.fastq | paste - - - - | sort -k1,1 -S 3G | tr '\t' '\n' | bgzip > ~{savePath}/~{outputFileNamePrefix}.fastq.gz
+        cat ~{savePath}/*.fastq | paste - - - - | sort -k1,1 -S 3G | tr '\t' '\n' | bgzip > ~{savePath}/~{outputFileNamePrefix}_mergedfastq.fastq.gz
     >>>
 
     output {

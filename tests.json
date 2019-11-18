@@ -20,7 +20,7 @@
           "guppy.inputPath": "/.mounts/labs/gsi/testdata/guppy/input_data/20171016_1345_PGD18/fast5",
           "guppy.kit": "SQK-CAS109",
           "guppy.flowcell" : "FLO-MIN106",
-          "guppy.outputFileNamePrefix" : "guppy_merged_fastqs"
+          "guppy.outputFileNamePrefix" : "ID_HERE"
         }
       }
     }
