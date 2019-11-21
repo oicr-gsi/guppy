@@ -6,12 +6,14 @@ workflow guppy {
         String flowcell
         String kit
         String outputFileNamePrefix
+        String? additionalParameters
     }
     parameter_meta {
         inputPath: "Input directory (directory of the nanopore run)"
         flowcell: "flowcell used in nanopore sequencing"
         kit: "kit used in nanopore sequencing"
         outputFileNamePrefix: "Variable used to set the name of the mergedfastqfile"
+        additionalParameters: "Additional parameters to be added to the guppy command"
     }
 
     meta {
@@ -31,7 +33,8 @@ workflow guppy {
             inputPath = inputPath,
             flowcell = flowcell,
             kit = kit,
-            outputFileNamePrefix = outputFileNamePrefix
+            outputFileNamePrefix = outputFileNamePrefix,
+            additionalParameters = additionalParameters
     }
     output {
         File mergedFastqFile = convert2Fastq.mergedFastqFile
@@ -42,17 +45,18 @@ workflow guppy {
 
 task convert2Fastq {
     input {
-        String? guppy = "guppy_basecaller"
+        String guppy = "guppy_basecaller"
         String inputPath
         String flowcell
         String kit
         String outputFileNamePrefix
-        String? savePath = "./output"
-        String? modules = "guppy/3.2.4"
-        String? basecallingDevice = '"cuda:0 cuda:1"'
-        Int? memory = 63
-        Int? numCallers = 16
-        Int? chunksPerRunner = 3328
+        String savePath = "./output"
+        String modules = "guppy/3.2.4"
+        String basecallingDevice = '"cuda:0 cuda:1"'
+        String? additionalParameters
+        Int memory = 63
+        Int numCallers = 16
+        Int chunksPerRunner = 3328
     }
     parameter_meta {
         guppy: "guppy_basecaller name to use."
@@ -66,6 +70,7 @@ task convert2Fastq {
         chunksPerRunner: "Maximum chunks per runner."
         numCallers: "Number of parallel basecallers to create."
         outputFileNamePrefix: "Variable used to set the name of the mergedfastqfile"
+        additionalParameters: "Additional parameters to be added to the guppy command"
     }
     meta {
         output_meta : {
@@ -84,6 +89,7 @@ task convert2Fastq {
         --flowcell ~{flowcell} \
         --kit ~{kit} \
         -x ~{basecallingDevice} \
+        ~{additionalParameters} \
         --disable_pings
         cat ~{savePath}/*.fastq | paste - - - - | sort -k1,1 -S 3G | tr '\t' '\n' | bgzip > ~{savePath}/~{outputFileNamePrefix}_mergedfastq.fastq.gz
     >>>
