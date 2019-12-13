@@ -1,0 +1,28 @@
+{
+  "defaults": {
+    "description": "guppy workflow test",
+    "metrics_calculate": "calculate.sh",
+    "metrics_compare": "compare.sh",
+    "output_metrics_dir": "/.mounts/labs/gsi/testdata/guppy/output_metrics",
+    "parameters": {
+      "wdl_options": {
+        "write_to_cache": false,
+        "read_from_cache": false,
+        "backend": "SGE-Docker"
+      }
+    }
+  },
+  "tests": [
+    {
+      "id": "guppyTest",
+      "parameters": {
+        "wdl_inputs": {
+          "guppy.inputPath": "/.mounts/labs/gsi/testdata/guppy/input_data/20171016_1345_PGD18/fast5",
+          "guppy.kit": "SQK-CAS109",
+          "guppy.flowcell" : "FLO-MIN106",
+          "guppy.outputFileNamePrefix" : "ID_HERE"
+        }
+      }
+    }
+  ]
+}
