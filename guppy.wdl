@@ -74,13 +74,17 @@ task basecaller {
         String kit
         String basecallerOutput = "basecaller_output"
         String modules = "guppy/4.0.14"
-        String basecallingDevice = '"cuda:0"'
         String? additionalParameters
         Int memory = 63
         Int numCallers = 8
         Int chunksPerRunner = 512
         Int gpuRunnerPerDevice = 4
-        Int workerThread = 12
+        Int gpuCount = 2
+        String gpuType = "Tesla*"
+        String gpuDevice = '"cuda:0 cuda:1"'
+        String gpuQueue = "gpu.q"
+        Int timeout = 24
+
     }
     parameter_meta {
         inputPath: "Input directory (directory of the nanopore run)"
@@ -88,12 +92,13 @@ task basecaller {
         kit: "kit used in nanopore sequencing"
         basecallerOutput: "Path to save the guppy basecaller output"
         modules: "Environment module names and version to load (space separated) before command execution."
-        basecallingDevice: "Specify basecalling device: 'auto', or 'cuda:<device_id>'."
+        gpuDevice: "Specify basecalling device: 'auto', or 'cuda:<device_id>'."
         memory: "Memory (in GB) allocated for job."
         chunksPerRunner: "Maximum chunks per runner."
         gpuRunnerPerDevice: "Number of gpu runner per device."
         numCallers: "Number of parallel basecallers to create."
         additionalParameters: "Additional parameters to be added to the guppy command"
+        timeout: "Maximum amount of time (in hours) the task can run for."
     }
     meta {
         output_meta : {
@@ -102,9 +107,8 @@ task basecaller {
         }
     }
 
-    String guppy_basecaller_dir_path = ""
-
     command <<<
+        set -euo pipefail
 
         $GUPPY_ROOT/bin/guppy_basecaller \
         --num_callers ~{numCallers} \
@@ -115,21 +119,23 @@ task basecaller {
         --save_path ~{basecallerOutput}  \
         --flowcell ~{flowcell} \
         --kit ~{kit} ~{additionalParameters} \
-        -x ~{basecallingDevice}
+        -x ~{gpuDevice}
 
-        readlink -f ~{basecallerOutput} > guppy_basecaller_dir_path
+        readlink -f ~{basecallerOutput} > guppy_basecaller_dir_path.txt
 
     >>>
 
     output {
-        String guppy_basecaller_dir = read_string(guppy_basecaller_dir_path) 
+        String guppy_basecaller_dir = read_string("guppy_basecaller_dir_path.txt") 
         File seqSummary = "~{basecallerOutput}/sequencing_summary.txt"
     }
     runtime {
         modules: "~{modules}"
         memory: "~{memory} GB"
-        gpuCount: 1
-        gpuType: "nvidia-tesla-v100"
+        gpuCount: "~{gpuCount}"
+        gpuType: "~{gpuType}"
+        gpuQueue: "~{gpuQueue}"
+        timeout: "~{timeout}"
     }
 }
 
@@ -142,14 +148,21 @@ task barcoder {
         String? additionalParameters
         Int memory = 63
         Int workerThread = 12
+        Int gpuCount = 2
+        String gpuType = "Tesla*"
+        String gpuDevice = '"cuda:0 cuda:1"'
+        String gpuQueue = "gpu.q"
+        Int timeout = 24
     }
     parameter_meta {
         inputPath: "Input directory (directory of the nanopore run)"
         barcodeKits: "barcode kits used for demultiplexing"
         barcoderOutput: "Path to save the guppy barcoder output"
         modules: "Environment module names and version to load (space separated) before command execution."
+        workerThread: "Number of worker threads for guppy barcoder."
         memory: "Memory (in GB) allocated for job."
         additionalParameters: "Additional parameters to be added to the guppy command"
+        timeout: "Maximum amount of time (in hours) the task can run for."
     }
     meta {
         output_meta : {
@@ -159,9 +172,9 @@ task barcoder {
         }
     }
 
-    String guppy_barcoder_dir_path = ""
 
     command <<<
+        set -euo pipefail
 
         $GUPPY_ROOT/bin/guppy_barcoder \
         --recursive \
@@ -172,19 +185,21 @@ task barcoder {
         --barcode_kits ~{barcodeKits} \
         ~{additionalParameters}
 
-        readlink -f ~{barcoderOutput} > guppy_barcoder_dir_path
+        readlink -f ~{barcoderOutput} > "guppy_barcoder_dir_path.txt"
 
     >>>
 
     output {
-        String guppy_barcoder_dir = read_string(guppy_barcoder_dir_path) 
+        String guppy_barcoder_dir = read_string("guppy_barcoder_dir_path.txt") 
         File barcodeSummary = "~{barcoderOutput}/barcoding_summary.txt"
     }
     runtime {
         modules: "~{modules}"
         memory: "~{memory} GB"
-        gpuCount: 2
-        gpuType: "nvidia-tesla-v100"
+        gpuCount: "~{gpuCount}"
+        gpuType: "~{gpuType}"
+        gpuQueue: "~{gpuQueue}"
+        timeout: "~{timeout}"
     }
 }
 
