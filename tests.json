@@ -17,7 +17,7 @@
       "description": "run guppy without demultiplexing",
       "parameters": {
         "wdl_inputs": {
-          "guppy.inputPath": "/.mounts/labs/gsi/testdata/guppy/input_data/20190620_1748_GA30000_FAK73147_5c566c2e/fast5",
+          "guppy.inputPath": "/.mounts/labs/gsi/testdata/guppy/input_data/20171016_1345_PGD18/fast5",
           "guppy.kit": "SQK-CAS109",
           "guppy.flowcell" : "FLO-MIN106",
           "guppy.run": "run1",
@@ -41,7 +41,7 @@
       "description": "run guppy with demultiplexing",
       "parameters": {
         "wdl_inputs": {
-          "guppy.inputPath": "/scratch2/groups/gsi/general/xluo/WDL/guppy/20190620_1748_GA30000_FAK73147_5c566c2e/fast5",
+          "guppy.inputPath": "/.mounts/labs/gsi/testdata/guppy/input_data/20190620_1748_GA30000_FAK73147_5c566c2e/fast5",
           "guppy.kit": "SQK-CAS109",
           "guppy.flowcell" : "FLO-MIN106",
           "guppy.run": "run1",
