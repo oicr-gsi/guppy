@@ -1,7 +1,7 @@
 version 1.0
 
 struct OutputGroup {
-    String barcode
+    String name
     File fastq
 }
 
@@ -38,7 +38,7 @@ workflow guppy {
         }]
 
      output_meta: {
-       outputGroups: "Array of objects with barcode and the merged fastq.",
+       outputGroups: "Array of objects with sample name and the merged fastq.",
        seqSummary: "sequencing summary of the basecalling",
        barcodeSummary: "barcoding summary of the demultiplexing"
     }       
@@ -66,7 +66,7 @@ workflow guppy {
               inputPath = path
         }
 
-        OutputGroup outputGroup = { "barcode": barcode,
+        OutputGroup outputGroup = { "name": name,
                           "fastq": mergeFastq.mergedfastq}
     }
     
