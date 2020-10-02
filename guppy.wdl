@@ -1,5 +1,10 @@
 version 1.0
 
+struct OutputGroup {
+    String barcode
+    File fastq
+}
+
 workflow guppy {
     input {
         String inputPath
@@ -32,58 +37,69 @@ workflow guppy {
             name: "guppy",
             url: "https://nanoporetech.com"
         }]
+
+     output_meta: {
+       outputGroups: "Array of objects with barcode and the merged fastq.",
+       seqSummary: "sequencing summary of the basecalling",
+       barcodeSummary: "barcoding summary of the demultiplexing"
+    }       
     }
-    call basecaller {
+
+    Boolean runBarcoder = if (defined(barcodeKits)) then true else false
+
+    call convert2Fastq {
         input:
           inputPath = inputPath,
           flowcell = flowcell,
-          kit = kit
-    }
-
-    if (defined(barcodeKits)) {
-      call barcoder {
-        input:
-          inputPath = basecaller.guppy_basecaller_dir,
-          barcodeKits = barcodeKits
-      }
+          kit = kit,
+          barcodeKits = barcodeKits,
+          runBarcoder = runBarcoder
     }
 
     scatter (sample in samples) {
         String barcode = sample.left
         String name = sample.right
-        String path = if (defined(barcodeKits)) then "~{barcoder.guppy_barcoder_dir}/~{barcode}/" else  "~{basecaller.guppy_basecaller_dir}"
+        String path = if (defined(barcodeKits)) then "~{convert2Fastq.guppy_output_dir}/~{barcode}/" else  "~{convert2Fastq.guppy_output_dir}"
         call mergeFastq {
             input:
               library = name,
               run = run,
               inputPath = path
         }
+
+        OutputGroup outputGroup = { "barcode": barcode,
+                          "fastq": mergeFastq.mergedfastq}
     }
     
     output {
-        File seqSummary = basecaller.seqSummary
-        File? barcodeSummary = barcoder.barcodeSummary
-        Array[File]+ fastqs = mergeFastq.mergedfastq
+        File seqSummary = convert2Fastq.seqSummary
+        File? barcodeSummary = convert2Fastq.barcodeSummary
+        Array[OutputGroup]+ outputGroups = outputGroup
     }
 }
 
-task basecaller {
+task convert2Fastq {
     input {
         String inputPath
         String flowcell
         String kit
         String basecallerOutput = "basecaller_output"
         String modules = "guppy/4.0.14"
-        String? additionalParameters
-        Int memory = 63
+        String? basecallerAdditionalParameters
         Int numCallers = 8
         Int chunksPerRunner = 512
         Int gpuRunnerPerDevice = 4
+        String? barcodeKits
+        String barcoderOutput = "barcoder_output"
+        Boolean runBarcoder
+        String? barcoderAdditionalParameters
+        Int workerThread = 12
         Int gpuCount = 2
         String gpuType = "Tesla*"
         String gpuDevice = '"cuda:0 cuda:1"'
         String gpuQueue = "gpu.q"
-        Int timeout = 24
+        Int memory = 63
+        Int timeout = 32
 
     }
     parameter_meta {
@@ -91,19 +107,28 @@ task basecaller {
         flowcell: "flowcell used in nanopore sequencing"
         kit: "kit used in nanopore sequencing"
         basecallerOutput: "Path to save the guppy basecaller output"
-        modules: "Environment module names and version to load (space separated) before command execution."
         gpuDevice: "Specify basecalling device: 'auto', or 'cuda:<device_id>'."
-        memory: "Memory (in GB) allocated for job."
         chunksPerRunner: "Maximum chunks per runner."
         gpuRunnerPerDevice: "Number of gpu runner per device."
         numCallers: "Number of parallel basecallers to create."
-        additionalParameters: "Additional parameters to be added to the guppy command"
+        basecallerAdditionalParameters: "Additional parameters to be added to the guppy basecaller command"
+        barcodeKits: "barcode kits used for demultiplexing"
+        barcoderOutput: "Path to save the guppy barcoder output"
+        runBarcoder: "run barcoder if true"
+        workerThread: "Number of worker threads for guppy barcoder."
+        barcoderAdditionalParameters: "Additional parameters to be added to the guppy barcoder command"
+        modules: "Environment module names and version to load (space separated) before command execution."
+        memory: "Memory (in GB) allocated for job."
         timeout: "Maximum amount of time (in hours) the task can run for."
+        gpuCount: "Number of gpu count."
+        gpuType: "gpu type."
+        gpuQueue: "gpu queue."                
     }
     meta {
         output_meta : {
-            mergedFastqFile: "merged output of all the fastq's gzipped",
-            seqSummary: "sequencing summary of the basecalling"
+            seqSummary: "sequencing summary of the basecalling",
+            barcodeSummary: "barcoding summary of the demultiplexing",
+            guppy_output_dir: "Path to the convert2Fastq output"
         }
     }
 
@@ -118,16 +143,29 @@ task basecaller {
         --input_path ~{inputPath} \
         --save_path ~{basecallerOutput}  \
         --flowcell ~{flowcell} \
-        --kit ~{kit} ~{additionalParameters} \
+        --kit ~{kit} ~{basecallerAdditionalParameters} \
         -x ~{gpuDevice}
 
-        readlink -f ~{basecallerOutput} > guppy_basecaller_dir_path.txt
+        if ~{runBarcoder}; then
 
+          $GUPPY_ROOT/bin/guppy_barcoder \
+          --recursive \
+          --worker_threads  ~{workerThread} \
+          --require_barcodes_both_ends \
+          --input_path ~{basecallerOutput} \
+          --save_path ~{barcoderOutput}  ~{barcoderAdditionalParameters} \
+          --barcode_kits ~{barcodeKits}
+     
+          readlink -f ~{barcoderOutput} > "guppy_output_dir_path.txt"
+        else 
+          readlink -f ~{basecallerOutput} > "guppy_output_dir_path.txt"
+        fi
     >>>
 
     output {
-        String guppy_basecaller_dir = read_string("guppy_basecaller_dir_path.txt") 
+        String guppy_output_dir = read_string("guppy_output_dir_path.txt") 
         File seqSummary = "~{basecallerOutput}/sequencing_summary.txt"
+        File? barcodeSummary = "~{barcoderOutput}/barcoding_summary.txt"
     }
     runtime {
         modules: "~{modules}"
@@ -139,69 +177,6 @@ task basecaller {
     }
 }
 
-task barcoder {
-    input {
-        String inputPath
-        String? barcodeKits
-        String barcoderOutput = "barcoder_output"
-        String modules = "guppy/4.0.14"
-        String? additionalParameters
-        Int memory = 63
-        Int workerThread = 12
-        Int gpuCount = 2
-        String gpuType = "Tesla*"
-        String gpuDevice = '"cuda:0 cuda:1"'
-        String gpuQueue = "gpu.q"
-        Int timeout = 24
-    }
-    parameter_meta {
-        inputPath: "Input directory (directory of the nanopore run)"
-        barcodeKits: "barcode kits used for demultiplexing"
-        barcoderOutput: "Path to save the guppy barcoder output"
-        modules: "Environment module names and version to load (space separated) before command execution."
-        workerThread: "Number of worker threads for guppy barcoder."
-        memory: "Memory (in GB) allocated for job."
-        additionalParameters: "Additional parameters to be added to the guppy command"
-        timeout: "Maximum amount of time (in hours) the task can run for."
-    }
-    meta {
-        output_meta : {
-            mergedFastqFile: "merged output of all the fastq's gzipped",
-            seqSummary: "sequencing summary of the basecalling",
-            barcodeSummary: "barcoding summary of the demultiplexing"
-        }
-    }
-
-
-    command <<<
-        set -euo pipefail
-
-        $GUPPY_ROOT/bin/guppy_barcoder \
-        --recursive \
-        --worker_threads  ~{workerThread} \
-        --require_barcodes_both_ends \
-        --input_path ~{inputPath} \
-        --save_path ~{barcoderOutput}  \
-        --barcode_kits ~{barcodeKits} \
-        ~{additionalParameters}
-
-        readlink -f ~{barcoderOutput} > "guppy_barcoder_dir_path.txt"
-
-    >>>
-
-    output {
-        String guppy_barcoder_dir = read_string("guppy_barcoder_dir_path.txt") 
-        File barcodeSummary = "~{barcoderOutput}/barcoding_summary.txt"
-    }
-    runtime {
-        modules: "~{modules}"
-        memory: "~{memory} GB"
-        gpuCount: "~{gpuCount}"
-        gpuType: "~{gpuType}"
-        gpuQueue: "~{gpuQueue}"
-        timeout: "~{timeout}"
-    }
-}
 
 task mergeFastq {
   input {
