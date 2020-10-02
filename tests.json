@@ -14,18 +14,31 @@
   "tests": [
     {
       "id": "guppyTest",
+      "description": "run guppy without demultiplexing",
       "parameters": {
         "wdl_inputs": {
           "guppy.inputPath": "/.mounts/labs/gsi/testdata/guppy/input_data/20171016_1345_PGD18/fast5",
           "guppy.kit": "SQK-CAS109",
           "guppy.flowcell" : "FLO-MIN106",
           "guppy.run": "run1",
-          "guppy.samples" : [{"left": "barcode1", "right": "sample1"}]
-        }
+          "guppy.samples" : [{"left": "barcode1", "right": "sample1"}]          
+        },
+        "wdl_outputs": {
+          "guppy.outputGroups": [
+            {
+              "annotations": {},
+              "key": {
+                "name": "sample1"
+              }
+            }
+          ],
+          "guppy.seqSummaryt": {}
+        } 
       }
     },
     {
       "id": "guppyDemultiplexingTest",
+      "description": "run guppy with demultiplexing",
       "parameters": {
         "wdl_inputs": {
           "guppy.inputPath": "/scratch2/groups/gsi/general/xluo/WDL/guppy/20190620_1748_GA30000_FAK73147_5c566c2e/fast5",
@@ -40,7 +53,49 @@
             {"left": "barcode04", "right": "sample4"},
             {"left": "barcode05", "right": "sample5"}, 
             {"left": "barcode06", "right": "sample6"}]
-        }
+        },
+       "wdl_outputs": {
+          "guppy.outputGroups": [
+            {
+              "annotations": {},
+              "key": {
+                "name": "sample1"
+              }
+            },
+            {
+              "annotations": {},
+              "key": {
+                "name": "sample2"
+              }
+            },
+            {
+              "annotations": {},
+              "key": {
+                "name": "sample3"
+              }
+            },
+            {
+              "annotations": {},
+              "key": {
+                "name": "sample4"
+              }
+            },
+            {
+              "annotations": {},
+              "key": {
+                "name": "sample5"
+              }
+            },
+            {
+              "annotations": {},
+              "key": {
+                "name": "sample6"
+              }
+            }                                                            
+          ],
+          "guppy.seqSummaryt": {},
+          "guppy.barcodeSummary": {}
+        }         
       }
     }    
   ]
