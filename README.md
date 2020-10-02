@@ -65,7 +65,7 @@ Output | Type | Description
 ---|---|---
 `seqSummary`|File|sequencing summary of the basecalling
 `barcodeSummary`|File?|barcoding summary of the demultiplexing
-`outputGroups`|Array[OutputGroup]+|Array of objects with barcode and the merged fastq.
+`outputGroups`|Array[OutputGroup]+|Array of objects with sample name and the merged fastq.
 
 
 ## Niassa + Cromwell
