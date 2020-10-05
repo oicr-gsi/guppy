@@ -9,4 +9,4 @@ cd $1
 #find all files, return their md5sums to std out
 ls | sort
 
-find . -type f -iname "*.fastq.gz" -exec md5sum {} | sort
+find . -type f -iname "*.fastq.gz" -exec md5sum {} \; | sort
