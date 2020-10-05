@@ -33,6 +33,7 @@
             }
           ],
           "guppy.seqSummary": {}
+          "guppy.barcodeSummary": {}
         } 
       }
     },
