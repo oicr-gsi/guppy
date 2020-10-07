@@ -25,8 +25,7 @@ Parameter|Value|Description
 `inputPath`|String|Input directory (directory of the nanopore run)
 `flowcell`|String|flowcell used in nanopore sequencing
 `kit`|String|kit used in nanopore sequencing
-`run`|String|sequencer run name
-`samples`|Array[Pair[String,String]]+|an array of pairs: barcode and sample name
+`samples`|Array[Sample]+|an array of pairs: barcode and sample name
 
 
 #### Optional workflow parameters:

@@ -20,8 +20,13 @@
           "guppy.inputPath": "/.mounts/labs/gsi/testdata/guppy/input_data/20171016_1345_PGD18/fast5",
           "guppy.kit": "SQK-CAS109",
           "guppy.flowcell" : "FLO-MIN106",
-          "guppy.run": "run1",
-          "guppy.samples" : [{"left": "barcode1", "right": "sample1"}]          
+          "guppy.samples" : [
+           {
+             "barcode": "barcode1",
+             "name": "sample1",
+             "outputFileNamePrefix": "sample1_barcode1"
+           }
+          ]          
         },
         "wdl_outputs": {
           "guppy.outputGroups": [
@@ -45,15 +50,39 @@
           "guppy.inputPath": "/.mounts/labs/gsi/testdata/guppy/input_data/20190620_1748_GA30000_FAK73147_5c566c2e/fast5",
           "guppy.kit": "SQK-CAS109",
           "guppy.flowcell" : "FLO-MIN106",
-          "guppy.run": "run1",
           "guppy.barcodeKits": "EXP-NBD104",
           "guppy.samples" : [
-            {"left": "barcode01", "right": "sample1"}, 
-            {"left": "barcode02", "right": "sample2"},
-            {"left": "barcode03", "right": "sample3"}, 
-            {"left": "barcode04", "right": "sample4"},
-            {"left": "barcode05", "right": "sample5"}, 
-            {"left": "barcode06", "right": "sample6"}]
+            {
+              "barcode": "barcode01",
+              "name": "sample1",
+              "outputFileNamePrefix": "sample1_barcode01"
+            }, 
+            {
+              "barcode": "barcode02",
+              "name": "sample2",
+              "outputFileNamePrefix": "sample2_barcode02"
+            },
+            {
+              "barcode": "barcode03",
+              "name": "sample3",
+              "outputFileNamePrefix": "sample3_barcode03"
+            }, 
+            {
+              "barcode": "barcode04",
+              "name": "sample4",
+              "outputFileNamePrefix": "sample4_barcode04"
+            },
+            {
+              "barcode": "barcode05",
+              "name": "sample5",
+              "outputFileNamePrefix": "sample5_barcode05"
+            }, 
+            {
+             "barcode": "barcode06",
+             "name": "sample6",
+             "outputFileNamePrefix": "sample6_barcode06"
+            }
+          ]
         },
        "wdl_outputs": {
           "guppy.outputGroups": [
