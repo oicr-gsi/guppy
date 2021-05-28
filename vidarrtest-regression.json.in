@@ -1,0 +1,256 @@
+[
+    {
+        "arguments": {
+            "guppy.barcodeKits": null,
+            "guppy.convert2Fastq.barcoderAdditionalParameters": null,
+            "guppy.convert2Fastq.barcoderOutput": null,
+            "guppy.convert2Fastq.basecallerAdditionalParameters": null,
+            "guppy.convert2Fastq.basecallerOutput": null,
+            "guppy.convert2Fastq.chunksPerRunner": null,
+            "guppy.convert2Fastq.gpuCount": null,
+            "guppy.convert2Fastq.gpuDevice": null,
+            "guppy.convert2Fastq.gpuQueue": null,
+            "guppy.convert2Fastq.gpuRunnerPerDevice": null,
+            "guppy.convert2Fastq.gpuType": null,
+            "guppy.convert2Fastq.memory": null,
+            "guppy.convert2Fastq.modules": null,
+            "guppy.convert2Fastq.numCallers": null,
+            "guppy.convert2Fastq.timeout": null,
+            "guppy.convert2Fastq.workerThread": null,
+            "guppy.flowcell": "FLO-MIN106",
+            "guppy.inputPath": {
+                "contents": {
+                    "configuration": "/.mounts/labs/gsi/testdata/guppy/input_data/20171016_1345_PGD18/fast5",
+                    "externalIds": [
+                        {
+                            "id": "TEST",
+                            "provider": "TEST"
+                        }
+                    ]
+                },
+                "type": "EXTERNAL"
+            },
+            "guppy.kit": "SQK-CAS109",
+            "guppy.mergeFastq.jobMemory": null,
+            "guppy.mergeFastq.modules": null,
+            "guppy.mergeFastq.threads": null,
+            "guppy.mergeFastq.timeout": null,
+            "guppy.samples": [
+                {
+                    "barcode": "barcode1",
+                    "name": "sample1",
+                    "outputFileNamePrefix": "sample1_run1"
+                }
+            ]
+        },
+        "description": "run guppy without demultiplexing",
+        "engineArguments": {},
+        "id": "guppyTest",
+        "metadata": {
+            "guppy.barcodeSummary": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_guppy_guppyTest_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "guppy.outputGroups": [
+                {
+                    "fastq": {
+                        "contents": [
+                            {
+                                "outputDirectory": "@SCRATCH@/@DATE@_Workflow_guppy_guppyTest_@JENKINSID@"
+                            }
+                        ],
+                        "type": "ALL"
+                    },
+                    "name": "sample1"
+                }
+            ],
+            "guppy.seqSummary": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_guppy_guppyTest_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            }
+        },
+        "validators": [
+            {
+                "metrics_calculate": "@CHECKOUT@/./calculate.sh",
+                "metrics_compare": "@CHECKOUT@/./compare.sh",
+                "output_metrics": "/.mounts/labs/gsi/testdata/guppy/output_metrics/guppyTest.metrics",
+                "type": "script"
+            }
+        ]
+    },
+    {
+        "arguments": {
+            "guppy.barcodeKits": "EXP-NBD104",
+            "guppy.convert2Fastq.barcoderAdditionalParameters": null,
+            "guppy.convert2Fastq.barcoderOutput": null,
+            "guppy.convert2Fastq.basecallerAdditionalParameters": null,
+            "guppy.convert2Fastq.basecallerOutput": null,
+            "guppy.convert2Fastq.chunksPerRunner": null,
+            "guppy.convert2Fastq.gpuCount": null,
+            "guppy.convert2Fastq.gpuDevice": null,
+            "guppy.convert2Fastq.gpuQueue": null,
+            "guppy.convert2Fastq.gpuRunnerPerDevice": null,
+            "guppy.convert2Fastq.gpuType": null,
+            "guppy.convert2Fastq.memory": null,
+            "guppy.convert2Fastq.modules": null,
+            "guppy.convert2Fastq.numCallers": null,
+            "guppy.convert2Fastq.timeout": null,
+            "guppy.convert2Fastq.workerThread": null,
+            "guppy.flowcell": "FLO-MIN106",
+            "guppy.inputPath": {
+                "contents": {
+                    "configuration": "/.mounts/labs/gsi/testdata/guppy/input_data/20190620_1748_GA30000_FAK73147_5c566c2e/fast5",
+                    "externalIds": [
+                        {
+                            "id": "TEST",
+                            "provider": "TEST"
+                        }
+                    ]
+                },
+                "type": "EXTERNAL"
+            },
+            "guppy.kit": "SQK-CAS109",
+            "guppy.mergeFastq.jobMemory": null,
+            "guppy.mergeFastq.modules": null,
+            "guppy.mergeFastq.threads": null,
+            "guppy.mergeFastq.timeout": null,
+            "guppy.samples": [
+                {
+                    "barcode": "barcode01",
+                    "name": "sample1",
+                    "outputFileNamePrefix": "sample1_run1"
+                },
+                {
+                    "barcode": "barcode02",
+                    "name": "sample2",
+                    "outputFileNamePrefix": "sample2_run1"
+                },
+                {
+                    "barcode": "barcode03",
+                    "name": "sample3",
+                    "outputFileNamePrefix": "sample3_run1"
+                },
+                {
+                    "barcode": "barcode04",
+                    "name": "sample4",
+                    "outputFileNamePrefix": "sample4_run1"
+                },
+                {
+                    "barcode": "barcode05",
+                    "name": "sample5",
+                    "outputFileNamePrefix": "sample5_run1"
+                },
+                {
+                    "barcode": "barcode06",
+                    "name": "sample6",
+                    "outputFileNamePrefix": "sample6_run1"
+                }
+            ]
+        },
+        "description": "run guppy with demultiplexing",
+        "engineArguments": {},
+        "id": "guppyDemultiplexingTest",
+        "metadata": {
+            "guppy.barcodeSummary": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_guppy_guppyDemultiplexingTest_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "guppy.outputGroups": [
+                {
+                    "fastq": {
+                        "contents": [
+                            {
+                                "outputDirectory": "@SCRATCH@/@DATE@_Workflow_guppy_guppyDemultiplexingTest_@JENKINSID@"
+                            }
+                        ],
+                        "type": "ALL"
+                    },
+                    "name": "sample1"
+                },
+                {
+                    "fastq": {
+                        "contents": [
+                            {
+                                "outputDirectory": "@SCRATCH@/@DATE@_Workflow_guppy_guppyDemultiplexingTest_@JENKINSID@"
+                            }
+                        ],
+                        "type": "ALL"
+                    },
+                    "name": "sample2"
+                },
+                {
+                    "fastq": {
+                        "contents": [
+                            {
+                                "outputDirectory": "@SCRATCH@/@DATE@_Workflow_guppy_guppyDemultiplexingTest_@JENKINSID@"
+                            }
+                        ],
+                        "type": "ALL"
+                    },
+                    "name": "sample3"
+                },
+                {
+                    "fastq": {
+                        "contents": [
+                            {
+                                "outputDirectory": "@SCRATCH@/@DATE@_Workflow_guppy_guppyDemultiplexingTest_@JENKINSID@"
+                            }
+                        ],
+                        "type": "ALL"
+                    },
+                    "name": "sample4"
+                },
+                {
+                    "fastq": {
+                        "contents": [
+                            {
+                                "outputDirectory": "@SCRATCH@/@DATE@_Workflow_guppy_guppyDemultiplexingTest_@JENKINSID@"
+                            }
+                        ],
+                        "type": "ALL"
+                    },
+                    "name": "sample5"
+                },
+                {
+                    "fastq": {
+                        "contents": [
+                            {
+                                "outputDirectory": "@SCRATCH@/@DATE@_Workflow_guppy_guppyDemultiplexingTest_@JENKINSID@"
+                            }
+                        ],
+                        "type": "ALL"
+                    },
+                    "name": "sample6"
+                }
+            ],
+            "guppy.seqSummary": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_guppy_guppyDemultiplexingTest_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            }
+        },
+        "validators": [
+            {
+                "metrics_calculate": "@CHECKOUT@/./calculate.sh",
+                "metrics_compare": "@CHECKOUT@/./compare.sh",
+                "output_metrics": "/.mounts/labs/gsi/testdata/guppy/output_metrics/guppyDemultiplexingTest.metrics",
+                "type": "script"
+            }
+        ]
+    }
+]
