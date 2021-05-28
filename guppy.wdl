@@ -19,7 +19,10 @@ workflow guppy {
         Array[Sample]+ samples
     }
     parameter_meta {
-        inputPath: "Input directory (directory of the nanopore run)"
+        inputPath: {
+          description: "Input directory (directory of the nanopore run)",
+          vidarr_type: "directory"
+        }
         flowcell: "flowcell used in nanopore sequencing"
         kit: "kit used in nanopore sequencing"
         barcodeKits: "barcode kit used in demultiplexing"
