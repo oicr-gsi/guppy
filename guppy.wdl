@@ -43,11 +43,20 @@ workflow guppy {
             url: "https://nanoporetech.com"
         }]
 
-     output_meta: {
-       outputGroups: "Array of objects with sample name and the merged fastq.",
-       seqSummary: "sequencing summary of the basecalling",
-       barcodeSummary: "barcoding summary of the demultiplexing"
-    }       
+    output_meta: {
+    outputGroups: {
+        description: "Array of objects with sample name and the merged fastq.",
+        vidarr_label: "outputGroups"
+    },
+    seqSummary: {
+        description: "sequencing summary of the basecalling",
+        vidarr_label: "seqSummary"
+    },
+    barcodeSummary: {
+        description: "barcoding summary of the demultiplexing",
+        vidarr_label: "barcodeSummary"
+    }
+}
     }
 
     Boolean runBarcoder = if (defined(barcodeKits)) then true else false
