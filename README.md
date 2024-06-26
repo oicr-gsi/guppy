@@ -22,7 +22,7 @@ java -jar cromwell.jar run guppy.wdl --inputs inputs.json
 #### Required workflow parameters:
 Parameter|Value|Description
 ---|---|---
-`inputPath`|String|Input directory (directory of the nanopore run)
+`inputPath`|String|{'description': 'Input directory (directory of the nanopore run)', 'vidarr_type': 'directory'}
 `flowcell`|String|flowcell used in nanopore sequencing
 `kit`|String|kit used in nanopore sequencing
 `samples`|Array[Sample]+|an array of pairs: barcode and sample name
@@ -60,37 +60,58 @@ Parameter|Value|Default|Description
 
 ### Outputs
 
-Output | Type | Description
----|---|---
-`seqSummary`|File|sequencing summary of the basecalling
-`barcodeSummary`|File?|barcoding summary of the demultiplexing
-`outputGroups`|Array[OutputGroup]+|Array of objects with sample name and the merged fastq.
+Output | Type | Description | Labels
+---|---|---|---
+`seqSummary`|File|sequencing summary of the basecalling|vidarr_label: seqSummary
+`barcodeSummary`|File?|barcoding summary of the demultiplexing|vidarr_label: barcodeSummary
+`outputGroups`|Array[OutputGroup]+|Array of objects with sample name and the merged fastq.|vidarr_label: outputGroups
 
 
-## Niassa + Cromwell
+## Commands
+This section lists command(s) run by guppy workflow
+ 
+* Running guppy
 
-This WDL workflow is wrapped in a Niassa workflow (https://github.com/oicr-gsi/pipedev/tree/master/pipedev-niassa-cromwell-workflow) so that it can used with the Niassa metadata tracking system (https://github.com/oicr-gsi/niassa).
-
-* Building
+### Wrapped guppy basecaller and barcoder
+ 
 ```
-mvn clean install
+         set -euo pipefail
+ 
+         $GUPPY_ROOT/bin/guppy_basecaller \
+         --num_callers ~{numCallers} \
+         --gpu_runners_per_device ~{gpuRunnerPerDevice} \
+         --chunks_per_runner ~{chunksPerRunner} \
+         --recursive \
+         --input_path ~{inputPath} \
+         --save_path ~{basecallerOutput}  \
+         --flowcell ~{flowcell} \
+         --kit ~{kit} ~{basecallerAdditionalParameters} \
+         -x ~{gpuDevice}
+ 
+         if ~{runBarcoder}; then
+ 
+           $GUPPY_ROOT/bin/guppy_barcoder \
+           --recursive \
+           --worker_threads  ~{workerThread} \
+           --require_barcodes_both_ends \
+           --input_path ~{basecallerOutput} \
+           --save_path ~{barcoderOutput}  ~{barcoderAdditionalParameters} \
+           --barcode_kits ~{barcodeKits}
+      
+           readlink -f ~{barcoderOutput} > "guppy_output_dir_path.txt"
+         else 
+           readlink -f ~{basecallerOutput} > "guppy_output_dir_path.txt"
+         fi
 ```
 
-* Testing
-```
-mvn clean verify \
--Djava_opts="-Xmx1g -XX:+UseG1GC -XX:+UseStringDeduplication" \
--DrunTestThreads=2 \
--DskipITs=false \
--DskipRunITs=false \
--DworkingDirectory=/path/to/tmp/ \
--DschedulingHost=niassa_oozie_host \
--DwebserviceUrl=http://niassa-url:8080 \
--DwebserviceUser=niassa_user \
--DwebservicePassword=niassa_user_password \
--Dcromwell-host=http://cromwell-url:8000
-```
+### Post-processing fastq files
 
+```
+     set -euo pipefail
+ 
+     find ~{inputPath} -name "*.fastq" | xargs -I {} cat {} | paste - - - - | sort -k6,6 -k4,4 -V -S 3G | tr '\t' '\n' | bgzip > ~{outputFileNamePrefix}.fastq.gz
+ 
+```
 ## Support
 
 For support, please file an issue on the [Github project](https://github.com/oicr-gsi) or send an email to gsi@oicr.on.ca .

@@ -1,0 +1,42 @@
+## Commands
+This section lists command(s) run by WORKFLOW workflow
+
+* Running WORKFLOW
+
+=== Description here ===.
+
+<<<
+        set -euo pipefail
+
+        $GUPPY_ROOT/bin/guppy_basecaller \
+        --num_callers ~{numCallers} \
+        --gpu_runners_per_device ~{gpuRunnerPerDevice} \
+        --chunks_per_runner ~{chunksPerRunner} \
+        --recursive \
+        --input_path ~{inputPath} \
+        --save_path ~{basecallerOutput}  \
+        --flowcell ~{flowcell} \
+        --kit ~{kit} ~{basecallerAdditionalParameters} \
+        -x ~{gpuDevice}
+
+        if ~{runBarcoder}; then
+
+          $GUPPY_ROOT/bin/guppy_barcoder \
+          --recursive \
+          --worker_threads  ~{workerThread} \
+          --require_barcodes_both_ends \
+          --input_path ~{basecallerOutput} \
+          --save_path ~{barcoderOutput}  ~{barcoderAdditionalParameters} \
+          --barcode_kits ~{barcodeKits}
+     
+          readlink -f ~{barcoderOutput} > "guppy_output_dir_path.txt"
+        else 
+          readlink -f ~{basecallerOutput} > "guppy_output_dir_path.txt"
+        fi
+    >>>
+<<<
+    set -euo pipefail
+
+    find ~{inputPath} -name "*.fastq" | xargs -I {} cat {} | paste - - - - | sort -k6,6 -k4,4 -V -S 3G | tr '\t' '\n' | bgzip > ~{outputFileNamePrefix}.fastq.gz
+
+  >>>
