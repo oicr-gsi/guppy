@@ -20,7 +20,7 @@
             "guppy.flowcell": "FLO-MIN106",
             "guppy.inputPath": {
                 "contents": {
-                    "configuration": "/.mounts/labs/gsi/testdata/guppy/input_data/20171016_1345_PGD18/fast5",
+                    "configuration": "/.mounts/labs/gsi/testdata/guppy/test_inputs/Test01/fast5",
                     "externalIds": [
                         {
                             "id": "TEST",
@@ -81,7 +81,7 @@
             {
                 "metrics_calculate": "@CHECKOUT@/tests/calculate.sh",
                 "metrics_compare": "@CHECKOUT@/tests/compare.sh",
-                "output_metrics": "/.mounts/labs/gsi/testdata/guppy/output_metrics/guppyTest.metrics",
+                "output_metrics": "/.mounts/labs/gsi/testdata/guppy/output_metrics/workflow_test_01.metrics",
                 "type": "script"
             }
         ]
@@ -107,7 +107,7 @@
             "guppy.flowcell": "FLO-MIN106",
             "guppy.inputPath": {
                 "contents": {
-                    "configuration": "/.mounts/labs/gsi/testdata/guppy/input_data/20190620_1748_GA30000_FAK73147_5c566c2e/fast5",
+                    "configuration": "/.mounts/labs/gsi/testdata/guppy/test_inputs/Test02/fast5",
                     "externalIds": [
                         {
                             "id": "TEST",
@@ -248,7 +248,7 @@
             {
                 "metrics_calculate": "@CHECKOUT@/tests/calculate.sh",
                 "metrics_compare": "@CHECKOUT@/tests/compare.sh",
-                "output_metrics": "/.mounts/labs/gsi/testdata/guppy/output_metrics/guppyDemultiplexingTest.metrics",
+                "output_metrics": "/.mounts/labs/gsi/testdata/guppy/output_metrics/workflow_test_02.metrics",
                 "type": "script"
             }
         ]
