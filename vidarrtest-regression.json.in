@@ -44,7 +44,10 @@
             ]
         },
         "description": "run guppy without demultiplexing",
-        "engineArguments": {},
+        "engineArguments": {
+            "write_to_cache": false,
+            "read_from_cache": false
+        },
         "id": "guppyTest",
         "metadata": {
             "guppy.barcodeSummary": {
@@ -156,7 +159,10 @@
             ]
         },
         "description": "run guppy with demultiplexing",
-        "engineArguments": {},
+        "engineArguments": {
+            "write_to_cache": false,
+            "read_from_cache": false
+        },
         "id": "guppyDemultiplexingTest",
         "metadata": {
             "guppy.barcodeSummary": {
