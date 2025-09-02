@@ -16,7 +16,7 @@ workflow guppy {
         String flowcell
         String kit
         String? barcodeKits
-        Array[Sample] samples
+        Array[Sample]+ samples
     }
     parameter_meta {
         inputPath: {
@@ -45,8 +45,7 @@ workflow guppy {
 
     output_meta: {
     outputGroups: {
-        description: "Array of objects with sample name and the merged fastq.",
-        vidarr_label: "outputGroups"
+        description: "Array of objects with sample name and the merged fastq."
     },
     seqSummary: {
         description: "sequencing summary of the basecalling",
@@ -88,7 +87,7 @@ workflow guppy {
     output {
         File seqSummary = convert2Fastq.seqSummary
         File? barcodeSummary = convert2Fastq.barcodeSummary
-        Array[OutputGroup] outputGroups = outputGroup
+        Array[OutputGroup]+ outputGroups = outputGroup
     }
 }
 
