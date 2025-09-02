@@ -16,7 +16,7 @@ workflow guppy {
         String flowcell
         String kit
         String? barcodeKits
-        Array[Sample]+ samples
+        Array[Sample] samples
     }
     parameter_meta {
         inputPath: {
@@ -88,7 +88,7 @@ workflow guppy {
     output {
         File seqSummary = convert2Fastq.seqSummary
         File? barcodeSummary = convert2Fastq.barcodeSummary
-        Array[OutputGroup]+ outputGroups = outputGroup
+        Array[OutputGroup] outputGroups = outputGroup
     }
 }
 
