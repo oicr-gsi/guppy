@@ -45,7 +45,8 @@ workflow guppy {
 
     output_meta: {
     outputGroups: {
-        description: "Array of objects with sample name and the merged fastq."
+        description: "Array of objects with sample name and the merged fastq.",
+        vidarr_label: "outputGroups"
     },
     seqSummary: {
         description: "sequencing summary of the basecalling",
